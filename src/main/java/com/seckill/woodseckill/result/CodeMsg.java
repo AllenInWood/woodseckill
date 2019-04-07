@@ -8,6 +8,12 @@ public class CodeMsg {
     public static CodeMsg SUCCESS = new CodeMsg(0, "success");
     public static CodeMsg SERVER_ERROR = new CodeMsg(500100, "server side errors");
     // login error 5002XX
+    public static CodeMsg SESSION_ERROR = new CodeMsg(500210, "session not exist or expire");
+    public static CodeMsg PASSWORD_EMPTY = new CodeMsg(500211, "password cannot be empty");
+    public static CodeMsg MOBILE_EMPTY = new CodeMsg(500212, "mobile number cannot be empty");
+    public static CodeMsg MOBILE_ERROR = new CodeMsg(500213, "mobile number format errors");
+    public static CodeMsg MOBILE_NOT_EXIST = new CodeMsg(500214, "mobile number not exist");
+    public static CodeMsg PASSWORD_ERROR = new CodeMsg(500215, "password errors");
 
     // goods error 5003XX
 

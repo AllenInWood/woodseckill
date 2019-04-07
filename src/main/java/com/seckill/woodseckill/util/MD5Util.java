@@ -20,13 +20,13 @@ public class MD5Util {
         return md5(str);
     }
 
-    public static String formPassToDbPass(String input, String saltDB) {
+    public static String inputPassToDbPass(String input, String saltDB) {
         String formPass = inputPassToFormPass(input);
         String dbPass = formPassToDBPass(formPass, saltDB);
         return dbPass;
     }
 
 //    public static void main(String[] args) {
-//        System.out.println(formPassToDBPass("123456", "1a2b3c4d"));
+//        System.out.println(inputPassToDbPass("123456", "1a2b3c4d"));
 //    }
 }
