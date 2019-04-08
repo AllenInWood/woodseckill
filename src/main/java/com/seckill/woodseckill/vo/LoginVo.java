@@ -1,7 +1,18 @@
 package com.seckill.woodseckill.vo;
 
+import com.seckill.woodseckill.validator.IsMobile;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotNull;
+
 public class LoginVo {
+
+    @NotNull
+    @IsMobile
     private String mobile;
+
+    @NotNull
+    @Length
     private String password;
 
     public String getMobile() {

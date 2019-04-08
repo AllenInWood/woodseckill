@@ -14,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.validation.Valid;
+
 @Controller
 @RequestMapping("/login")
 public class LoginController {
@@ -33,20 +35,20 @@ public class LoginController {
 
     @RequestMapping("/do_login")
     @ResponseBody
-    public Result<Boolean> doLogin(LoginVo loginVo) {
+    public Result<Boolean> doLogin(@Valid LoginVo loginVo) {
         log.info(loginVo.toString());
         // attrs validation
-        String passInput = loginVo.getPassword();
-        String mobileInput = loginVo.getMobile();
-        if (StringUtils.isEmpty(passInput)) {
-            return Result.error(CodeMsg.PASSWORD_EMPTY);
-        }
-        if (StringUtils.isEmpty(mobileInput)) {
-            return Result.error(CodeMsg.MOBILE_EMPTY);
-        }
-        if (!ValidatorUtil.isMobile(mobileInput)) {
-            return Result.error(CodeMsg.MOBILE_ERROR);
-        }
+//        String passInput = loginVo.getPassword();
+//        String mobileInput = loginVo.getMobile();
+//        if (StringUtils.isEmpty(passInput)) {
+//            return Result.error(CodeMsg.PASSWORD_EMPTY);
+//        }
+//        if (StringUtils.isEmpty(mobileInput)) {
+//            return Result.error(CodeMsg.MOBILE_EMPTY);
+//        }
+//        if (!ValidatorUtil.isMobile(mobileInput)) {
+//            return Result.error(CodeMsg.MOBILE_ERROR);
+//        }
         // login
         CodeMsg cm = seckillUserService.login(loginVo);
         if (cm.getCode() == 0) {
