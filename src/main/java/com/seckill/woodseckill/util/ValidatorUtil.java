@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 public class ValidatorUtil {
 
-    private static final Pattern mobile_pattern = Pattern.compile("\\d{10}");
+    private static final Pattern mobile_pattern = Pattern.compile("949\\d{7}");
 
     public static boolean isMobile(String src) {
         if (StringUtils.isEmpty(src)) {
