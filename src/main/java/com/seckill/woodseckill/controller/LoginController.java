@@ -50,11 +50,7 @@ public class LoginController {
 //            return Result.error(CodeMsg.MOBILE_ERROR);
 //        }
         // login
-        CodeMsg cm = seckillUserService.login(loginVo);
-        if (cm.getCode() == 0) {
-            return Result.success(true);
-        } else {
-            return Result.error(cm);
-        }
+        seckillUserService.login(loginVo);
+        return Result.success(true);
     }
 }
