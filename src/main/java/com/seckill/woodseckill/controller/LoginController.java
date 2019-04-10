@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @Controller
@@ -35,22 +36,10 @@ public class LoginController {
 
     @RequestMapping("/do_login")
     @ResponseBody
-    public Result<Boolean> doLogin(@Valid LoginVo loginVo) {
+    public Result<Boolean> doLogin(HttpServletResponse response, @Valid LoginVo loginVo) {
         log.info(loginVo.toString());
-        // attrs validation
-//        String passInput = loginVo.getPassword();
-//        String mobileInput = loginVo.getMobile();
-//        if (StringUtils.isEmpty(passInput)) {
-//            return Result.error(CodeMsg.PASSWORD_EMPTY);
-//        }
-//        if (StringUtils.isEmpty(mobileInput)) {
-//            return Result.error(CodeMsg.MOBILE_EMPTY);
-//        }
-//        if (!ValidatorUtil.isMobile(mobileInput)) {
-//            return Result.error(CodeMsg.MOBILE_ERROR);
-//        }
         // login
-        seckillUserService.login(loginVo);
+        seckillUserService.login(response, loginVo);
         return Result.success(true);
     }
 }
