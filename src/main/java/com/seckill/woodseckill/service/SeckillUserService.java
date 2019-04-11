@@ -31,11 +31,13 @@ public class SeckillUserService {
         return seckillUserDao.getById(id);
     }
 
-    public SeckillUser getByToken(String token) {
+    public SeckillUser getByToken(HttpServletResponse response, String token) {
         if (StringUtils.isEmpty(token)) {
             return null;
         }
-        return redisService.get(SeckillUserKey.token, token, SeckillUser.class);
+        SeckillUser user = redisService.get(SeckillUserKey.token, token, SeckillUser.class);
+        addCookie(response, user);
+        return user;
     }
 
     public boolean login(HttpServletResponse response, LoginVo loginVo) {
@@ -59,12 +61,16 @@ public class SeckillUserService {
         }
 
         // login success, generate cookie
+        addCookie(response, user);
+        return true;
+    }
+
+    private void addCookie(HttpServletResponse response, SeckillUser user) {
         String token = UUIDUtil.uuid();
         redisService.set(SeckillUserKey.token, token, user);
         Cookie cookie = new Cookie(COOKIE_NAME_TOKEN, token);
         cookie.setMaxAge(SeckillUserKey.token.expireSecond());
         cookie.setPath("/");
         response.addCookie(cookie);
-        return true;
     }
 }
