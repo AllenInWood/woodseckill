@@ -21,6 +21,8 @@ public class CodeMsg {
     // order error 5004XX
 
     // seckill error 5005XX
+    public static CodeMsg SECOND_KILL_OVER = new CodeMsg(500500, "second kill overs");
+    public static CodeMsg REPEAT_SECOND_KILL = new CodeMsg(500501, "cannot second kill repeatedly");
 
     private CodeMsg(int code, String msg) {
         this.code = code;

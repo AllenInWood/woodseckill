@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Order Detail</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <!--jquery-->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
+    <!--boostrap-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <!--jquery validator-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+    <!--layer-->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/layer/2.3/layer.js"></script>
+    <!--md5-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.10.0/js/md5.min.js"></script>
+    <!--common.js-->
+    <script type="text/javascript" th:src="@{/js/common.js}"></script>
+</head>
+<body>
+    <div class="panel panel-default">
+        <div class="panel-heading">Second kill order detail</div>
+        <table class="table" id="goodslist">
+            <tr>
+                <td>Goods Name</td>
+                <td th:text="${goods.goodsName}" colspan="3"></td>
+            </tr>
+            <tr>
+                <td>Goods Img</td>
+                <td colspan="2"><img th:src="@{${goods.goodsImg}}" width="200" height="200" /> </td>
+            </tr>
+            <tr>
+                <td>Order Price</td>
+                <td colspan="2" th:text="${orderInfo.goodsPrice}"></td>
+            </tr>
+            <tr>
+                <td>Order Create Time</td>
+                <td th:text="${orderInfo.createDate}" colspan="2"></td>
+            </tr>
+            <tr>
+                <td>Order Status</td>
+                <td>
+                    <span th:if="${orderInfo.status eq 0}">Not Pay</span>
+                    <span th:if="${orderInfo.status eq 1}">Wait to deliver</span>
+                    <span th:if="${orderInfo.status eq 2}">Sent</span>
+                    <span th:if="${orderInfo.status eq 3}">Delivered</span>
+                    <span th:if="${orderInfo.status eq 4}">Refunded</span>
+                    <span th:if="${orderInfo.status eq 5}">Completed</span>
+                </td>
+                <td>
+                    <button class="btn btn-primary btn-block" type="submit" id="payButton">Pay Now!</button>
+                </td>
+            </tr>
+            <tr>
+                <td>Receive People</td>
+                <td colspan="2">XXX 949-332-5819</td>
+            </tr>
+            <tr>
+                <td>Receive Address</td>
+                <td colspan="2">Beijing Changping</td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

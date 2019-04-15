@@ -3,7 +3,7 @@ package com.seckill.woodseckill.domain;
 import java.util.Date;
 
 public class SeckillUser {
-    private String id;
+    private Long id;
     private String nickname;
     private String password;
     private String salt;
@@ -12,11 +12,11 @@ public class SeckillUser {
     private Date lastLoginDate;
     private Integer loginCount;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
