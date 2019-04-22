@@ -48,15 +48,16 @@ public class GoodsController {
                          Model model,
                          SeckillUser user) {
         model.addAttribute("user", user);
-        // select goods list
-        List<GoodsVo> goodsList = goodsService.listGoodsVo();
-        model.addAttribute("goodsList", goodsList);
-//        return "goods_list";
         // page level cache
         String html = redisService.get(GoodsKey.getGoodsList, "", String.class);
         if (!StringUtils.isEmpty(html)) {
             return html;
         }
+
+        // select goods list
+        List<GoodsVo> goodsList = goodsService.listGoodsVo();
+        model.addAttribute("goodsList", goodsList);
+//        return "goods_list";
         WebContext ctx = new WebContext(
                 request, response, request.getServletContext(),
                 request.getLocale(), model.asMap());
