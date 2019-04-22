@@ -84,6 +84,25 @@ public class RedisService {
     }
 
     /**
+     * delete key-value
+     * @param prefix
+     * @param key
+     * @return
+     */
+    public boolean delete(KeyPrefix prefix, String key) {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            // generate real key
+            String realKey = prefix.getPrefix() + key;
+            long ret = jedis.del(key);
+            return ret > 0;
+        } finally {
+            returnToPool(jedis);
+        }
+    }
+
+    /**
      * increase value
      * @param prefix
      * @param key
