@@ -26,6 +26,10 @@ public class GoodsController {
     @Autowired
     GoodsService goodsService;
 
+    /**
+     * QPS : 1267
+     * 5000 * 10
+     */
     @RequestMapping("/to_list")
     public String toList(Model model,
                          SeckillUser user) {
