@@ -3,8 +3,10 @@ package com.seckill.woodseckill.controller;
 import com.seckill.woodseckill.domain.SeckillUser;
 import com.seckill.woodseckill.redis.GoodsKey;
 import com.seckill.woodseckill.redis.RedisService;
+import com.seckill.woodseckill.result.Result;
 import com.seckill.woodseckill.service.GoodsService;
 import com.seckill.woodseckill.service.SeckillUserService;
+import com.seckill.woodseckill.vo.GoodsDetailVo;
 import com.seckill.woodseckill.vo.GoodsVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,9 +71,9 @@ public class GoodsController {
         return html;
     }
 
-    @RequestMapping(value = "/to_detail/{goodsId}", produces = "text/html")
+    @RequestMapping(value = "/to_detail2/{goodsId}", produces = "text/html")
     @ResponseBody
-    public String toDetail(HttpServletRequest request,
+    public String toDetail2(HttpServletRequest request,
                            HttpServletResponse response,
                            Model model,
                            SeckillUser user,
@@ -115,5 +117,37 @@ public class GoodsController {
             redisService.set(GoodsKey.getGoodsDetail, "" + goodsId, html);
         }
         return html;
+    }
+
+    // change goods detail page to static
+    @RequestMapping(value = "/detail/{goodsId}")
+    @ResponseBody
+    public Result<GoodsDetailVo> toDetail(HttpServletRequest request,
+                                          HttpServletResponse response,
+                                          Model model,
+                                          SeckillUser user,
+                                          @PathVariable("goodsId") long goodsId) {
+        GoodsVo goods = goodsService.getGoodsVoByGoodsId(goodsId);
+        long startTime = goods.getStartDate().getTime();
+        long endTime = goods.getEndDate().getTime();
+        long now = System.currentTimeMillis();
+        int seckillStatus = 0;
+        int remainSecond = 0;
+        if (now < startTime) { // time countdown
+            seckillStatus = 0;
+            remainSecond = (int) ((startTime - now) / 1000);
+        } else if (now > endTime) { // second kill ends
+            seckillStatus = 2;
+            remainSecond = -1;
+        } else { // ing
+            seckillStatus = 1;
+            remainSecond = 0;
+        }
+        GoodsDetailVo goodsDetailVo = new GoodsDetailVo();
+        goodsDetailVo.setGoods(goods);
+        goodsDetailVo.setRemainSecond(remainSecond);
+        goodsDetailVo.setSeckillStatus(seckillStatus);
+        goodsDetailVo.setUser(user);
+        return Result.success(goodsDetailVo);
     }
 }
