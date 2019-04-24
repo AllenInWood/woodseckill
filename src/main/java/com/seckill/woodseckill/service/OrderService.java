@@ -4,6 +4,8 @@ import com.seckill.woodseckill.dao.OrderDao;
 import com.seckill.woodseckill.domain.OrderInfo;
 import com.seckill.woodseckill.domain.SeckillOrder;
 import com.seckill.woodseckill.domain.SeckillUser;
+import com.seckill.woodseckill.redis.OrderKey;
+import com.seckill.woodseckill.redis.RedisService;
 import com.seckill.woodseckill.vo.GoodsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,8 +19,13 @@ public class OrderService {
     @Autowired
     OrderDao orderDao;
 
+    @Autowired
+    RedisService redisService;
+
     public SeckillOrder getSeckillOrderByUserIdGoodsId(long userId, long goodsId) {
-        return orderDao.getSeckillOrderByUserIdGoodsId(userId, goodsId);
+        // look up in cache instead of db
+//        return orderDao.getSeckillOrderByUserIdGoodsId(userId, goodsId);
+        return redisService.get(OrderKey.getSeckillOrderByUidGid, "" + userId + "_" + goodsId, SeckillOrder.class);
     }
 
     @Transactional
@@ -39,6 +46,12 @@ public class OrderService {
         seckillOrder.setUserId(user.getId());
         seckillOrder.setOrderId(orderId);
         orderDao.insertSeckillOrder(seckillOrder);
+        // cache seckill order
+        redisService.set(OrderKey.getSeckillOrderByUidGid, "" + user.getId() + "_" + goods.getId(), seckillOrder);
         return orderInfo;
+    }
+
+    public OrderInfo getOrderById(long orderId) {
+        return orderDao.getOrderById(orderId);
     }
 }

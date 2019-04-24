@@ -33,7 +33,7 @@
             </tr>
             <tr>
                 <td>Order Price</td>
-                <td colspan="2" id="goodsPrice"></td>
+                <td colspan="2" id="orderPrice"></td>
             </tr>
             <tr>
                 <td>Order Create Time</td>
@@ -42,12 +42,6 @@
             <tr>
                 <td>Order Status</td>
                 <td id="orderStatus">
-                    <!--<span if="${orderInfo.status eq 0}">Not Pay</span>-->
-                    <!--<span if="${orderInfo.status eq 1}">Wait to deliver</span>-->
-                    <!--<span if="${orderInfo.status eq 2}">Sent</span>-->
-                    <!--<span if="${orderInfo.status eq 3}">Delivered</span>-->
-                    <!--<span if="${orderInfo.status eq 4}">Refunded</span>-->
-                    <!--<span if="${orderInfo.status eq 5}">Completed</span>-->
                 </td>
                 <td>
                     <button class="btn btn-primary btn-block" type="submit" id="payButton">Pay Now!</button>
@@ -64,4 +58,54 @@
         </table>
     </div>
 </body>
+<script>
+    $(function () {
+        getOrderDetail();
+    })
+
+    function getOrderDetail() {
+        var orderId = g_getQueryString("orderId");
+        $.ajax({
+            url: "/order/detail",
+            type: "GET",
+            data: {
+                "orderId" : orderId,
+            },
+            success: function (data) {
+                if (data.code == 0) {
+                    render(data.data);
+                } else {
+                    layer.msg(data.msg);
+                }
+            },
+            error: function () {
+                layer.msg("client request errors");
+            }
+        });
+    }
+
+    function render(detail) {
+        var goods = detail.goods;
+        var order = detail.order;
+        $("#goodsName").text(goods.goodsName);
+        $("#goodsImg").attr("src", goods.goodsImg);
+        $("#orderPrice").text(order.goodsPrice);
+        $("#createDate").text(new Date(order.createDate).format("yyyy-MM-dd hh:mm:ss"));
+        var status = "";
+        if (order.status == 0) {
+            status = "Not Pay";
+        } else if (order.status == 1) {
+            status = "Wait to deliver";
+        } else if (order.status == 2) {
+            status = "Sent";
+        } else if (order.status == 3) {
+            status = "Delivered";
+        } else if (order.status == 4) {
+            status = "Refunded";
+        } else if (order.status == 5) {
+            status = "Completed";
+        }
+        $("#orderStatus").text(status);
+    }
+</script>
 </html>

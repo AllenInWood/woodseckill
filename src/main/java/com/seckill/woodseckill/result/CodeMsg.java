@@ -19,6 +19,7 @@ public class CodeMsg {
     // goods error 5003XX
 
     // order error 5004XX
+    public static CodeMsg ORDER_NOT_EXIST = new CodeMsg(500400, "order not exist");
 
     // seckill error 5005XX
     public static CodeMsg SECOND_KILL_OVER = new CodeMsg(500500, "second kill overs");
