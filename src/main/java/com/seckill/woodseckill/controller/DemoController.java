@@ -1,6 +1,7 @@
 package com.seckill.woodseckill.controller;
 
 import com.seckill.woodseckill.domain.User;
+import com.seckill.woodseckill.rabbitmq.MQSender;
 import com.seckill.woodseckill.redis.RedisService;
 import com.seckill.woodseckill.redis.UserKey;
 import com.seckill.woodseckill.result.CodeMsg;
@@ -21,6 +22,38 @@ public class DemoController {
 
     @Autowired
     RedisService redisService;
+
+    @Autowired
+    MQSender sender;
+
+    //swagger
+    @RequestMapping("/mq/header")
+    @ResponseBody
+    public Result<String> header() {
+        sender.sendHeader("Hello, RabbitMQ");
+        return Result.success("hello, result");
+    }
+
+    @RequestMapping("/mq/fanout")
+    @ResponseBody
+    public Result<String> fanout() {
+        sender.sendFanout("Hello, RabbitMQ");
+        return Result.success("hello, result");
+    }
+
+    @RequestMapping("/mq/topic")
+    @ResponseBody
+    public Result<String> topic() {
+        sender.sendTopic("Hello, RabbitMQ");
+        return Result.success("hello, result");
+    }
+
+    @RequestMapping("/mq")
+    @ResponseBody
+    public Result<String> mq() {
+        sender.send("Hello, RabbitMQ");
+        return Result.success("hello, result");
+    }
 
     @RequestMapping("/")
     @ResponseBody
