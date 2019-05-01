@@ -10,9 +10,7 @@ import java.util.Map;
 @Configuration
 public class MQConfig {
 
-    /**
-     * Direct exchange model
-     */
+    public static final String SECKILL_QUEUE = "seckill.queue";
     public static final String QUEUE = "queue";
     public static final String TOPIC_QUEUE1 = "topic.queue1";
     public static final String TOPIC_QUEUE2 = "topic.queue2";
@@ -21,6 +19,13 @@ public class MQConfig {
     public static final String FANOUT_EXCHANGE = "fanoutExchange";
     public static final String HEADER_EXCHANGE = "headerExchange";
 
+    @Bean
+    public Queue seckillQueue() {
+        return new Queue(SECKILL_QUEUE, true);
+    }
+    /**
+     * Direct exchange model
+     */
     @Bean
     public Queue queue() {
         return new Queue(QUEUE, true);

@@ -27,33 +27,33 @@ public class DemoController {
     MQSender sender;
 
     //swagger
-    @RequestMapping("/mq/header")
-    @ResponseBody
-    public Result<String> header() {
-        sender.sendHeader("Hello, RabbitMQ");
-        return Result.success("hello, result");
-    }
-
-    @RequestMapping("/mq/fanout")
-    @ResponseBody
-    public Result<String> fanout() {
-        sender.sendFanout("Hello, RabbitMQ");
-        return Result.success("hello, result");
-    }
-
-    @RequestMapping("/mq/topic")
-    @ResponseBody
-    public Result<String> topic() {
-        sender.sendTopic("Hello, RabbitMQ");
-        return Result.success("hello, result");
-    }
-
-    @RequestMapping("/mq")
-    @ResponseBody
-    public Result<String> mq() {
-        sender.send("Hello, RabbitMQ");
-        return Result.success("hello, result");
-    }
+//    @RequestMapping("/mq/header")
+//    @ResponseBody
+//    public Result<String> header() {
+//        sender.sendHeader("Hello, RabbitMQ");
+//        return Result.success("hello, result");
+//    }
+//
+//    @RequestMapping("/mq/fanout")
+//    @ResponseBody
+//    public Result<String> fanout() {
+//        sender.sendFanout("Hello, RabbitMQ");
+//        return Result.success("hello, result");
+//    }
+//
+//    @RequestMapping("/mq/topic")
+//    @ResponseBody
+//    public Result<String> topic() {
+//        sender.sendTopic("Hello, RabbitMQ");
+//        return Result.success("hello, result");
+//    }
+//
+//    @RequestMapping("/mq")
+//    @ResponseBody
+//    public Result<String> mq() {
+//        sender.send("Hello, RabbitMQ");
+//        return Result.success("hello, result");
+//    }
 
     @RequestMapping("/")
     @ResponseBody
