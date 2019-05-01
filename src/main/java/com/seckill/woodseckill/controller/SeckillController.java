@@ -1,6 +1,5 @@
 package com.seckill.woodseckill.controller;
 
-import com.seckill.woodseckill.domain.OrderInfo;
 import com.seckill.woodseckill.domain.SeckillOrder;
 import com.seckill.woodseckill.domain.SeckillUser;
 import com.seckill.woodseckill.rabbitmq.MQSender;
@@ -20,7 +19,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/seckill")
@@ -44,6 +45,8 @@ public class SeckillController implements InitializingBean {
     @Autowired
     MQSender mqSender;
 
+    private Map<Long, Boolean> localOverMap = new HashMap<>();
+
     /**
      * Framework will call this method when system is initializing
      */
@@ -53,8 +56,10 @@ public class SeckillController implements InitializingBean {
         if (goodsList == null) {
             return;
         }
-        goodsList.forEach(goodsVo -> redisService.set(
-                GoodsKey.getSeckillGoodsStock, "" + goodsVo.getId(), goodsVo.getStockCount()));
+        goodsList.forEach(goodsVo -> {
+            redisService.set(GoodsKey.getSeckillGoodsStock, "" + goodsVo.getId(), goodsVo.getStockCount());
+            localOverMap.put(goodsVo.getId(), false);
+        });
     }
 
     @RequestMapping(value = "/do_seckill", method = RequestMethod.POST)
@@ -66,10 +71,17 @@ public class SeckillController implements InitializingBean {
         if (user == null) {
             return Result.error(CodeMsg.SESSION_ERROR);
         }
+
+        // memory flag, decrease radis access
+        boolean over = localOverMap.get(goodsId);
+        if (over) {
+            return Result.error(CodeMsg.SECOND_KILL_OVER);
+        }
         // optimize seckill process with help of rabbitMQ
         // pre minus stock
         long stock = redisService.decr(GoodsKey.getSeckillGoodsStock, "" + goodsId);
         if (stock < 0) {
+            localOverMap.put(goodsId, true);
             return Result.error(CodeMsg.SECOND_KILL_OVER);
         }
         // if success kill exists (in case duplicate kill)
